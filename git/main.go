@@ -1,6 +1,9 @@
 package main
 
-import "context"
+import (
+	"context"
+	"strings"
+)
 
 type Git struct{}
 
@@ -22,6 +25,7 @@ func (m *Git) GetLatestTag(ctx context.Context, source *Directory) (string, erro
 	if err != nil {
 		return "", err
 	}
+	tag = strings.Trim(tag, "\n")
 	return tag, nil
 }
 
@@ -39,6 +43,7 @@ func (m *Git) GetLatestBranch(ctx context.Context, source *Directory) (string, e
 	if err != nil {
 		return "", err
 	}
+	branch = strings.Trim(branch, "\n")
 	return branch, nil
 }
 
@@ -47,7 +52,7 @@ func (m *Git) GetHash(ctx context.Context, source *Directory) (string, error) {
 		"rev-parse", "HEAD",
 	}
 
-	branch, err := dag.Container().
+	hash, err := dag.Container().
 		From(GIT_IMAGE).
 		WithMountedDirectory(WORK_DIR, source).
 		WithWorkdir(WORK_DIR).
@@ -56,5 +61,6 @@ func (m *Git) GetHash(ctx context.Context, source *Directory) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return branch, nil
+	hash = strings.Trim(hash, "\n")
+	return hash, nil
 }
