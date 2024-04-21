@@ -1,6 +1,12 @@
 {
   "name": "golang",
   "sdk": "go",
+  "dependencies": [
+    {
+      "name": "git",
+      "source": "github.com/bmwinstead/dagger-test/git@bca011e31c668ab26cb83af41b90022e654e166f"
+    }
+  ],
   "source": ".",
   "engineVersion": "v0.11.1"
 }
