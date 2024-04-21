@@ -41,3 +41,20 @@ func (m *Git) GetLatestBranch(ctx context.Context, source *Directory) (string, e
 	}
 	return branch, nil
 }
+
+func (m *Git) GetHash(ctx context.Context, source *Directory) (string, error) {
+	args := []string{
+		"rev-parse", "HEAD",
+	}
+
+	branch, err := dag.Container().
+		From(GIT_IMAGE).
+		WithMountedDirectory(WORK_DIR, source).
+		WithWorkdir(WORK_DIR).
+		WithExec(args).
+		Stdout(ctx)
+	if err != nil {
+		return "", err
+	}
+	return branch, nil
+}
